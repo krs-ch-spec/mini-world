@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini World : เรื่องเล่ามหัศจรรย์ผ่านเลนส์ — โรงเรียนปากเกร็ด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Taviraj:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest-deep:#0c1a10;
+  --forest-mid:#173420;
+  --forest-soft:#22462d;
+  --moss:#5c8a52;
+  --gold:#d9a441;
+  --gold-light:#f2c66d;
+  --coral:#c1442d;
+  --cream:#f4efe1;
+  --cream-dim:rgba(244,239,225,0.68);
+  --line:rgba(244,239,225,0.14);
+  --shadow-deep: 0 30px 60px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    linear-gradient(180deg, rgba(12,26,16,0.90) 0%, rgba(12,26,16,0.94) 45%, var(--forest-deep) 100%),
+    url('https://s.imgz.io/2026/07/13/1016352465cc99913.png') center 20%/cover fixed no-repeat;
+  color:var(--cream);
+  font-family:'Sarabun', sans-serif;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(92,138,82,0.10), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(217,164,65,0.08), transparent 45%);
+  pointer-events:none;
+  z-index:0;
+}
+::selection{background:var(--gold); color:var(--forest-deep);}
+
+/* ---------- utility ---------- */
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--gold-light);
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before{content:""; width:22px; height:1px; background:var(--gold-light);}
+h1,h2,h3{font-family:'Taviraj', serif; font-weight:600; letter-spacing:0.01em;}
+a{color:inherit;}
+.veil-line{height:1px; width:100%; background:linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);}
+
+/* ---------- aperture intro ---------- */
+#aperture-overlay{
+  position:fixed; inset:0; z-index:999;
+  background:var(--forest-deep);
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+}
+#aperture-overlay svg{width:46vmin; height:46vmin;}
+.blade{
+  transform-origin:120px 120px;
+  fill:#081308;
+  animation:blade-open 1.15s cubic-bezier(.6,0,.2,1) forwards;
+  animation-delay:.25s;
+}
+@keyframes blade-open{
+  0%{ transform:scale(1) rotate(0deg); opacity:1;}
+  70%{opacity:1;}
+  100%{ transform:scale(2.6) rotate(28deg); opacity:0;}
+}
+#aperture-overlay{animation:overlay-fade .4s ease-out 1.35s forwards;}
+@keyframes overlay-fade{to{opacity:0; visibility:hidden;}}
+
+/* ---------- brand (used in footer) ---------- */
+.brand{display:flex; align-items:center; gap:12px; font-family:'Taviraj', serif; font-size:16px;}
+.brand-mark{
+  width:36px; height:36px; border-radius:50%;
+  border:1.5px solid var(--gold-light);
+  background:var(--cream);
+  object-fit:contain; object-position:center;
+  padding:3px;
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  min-height:92vh;
+  display:flex; align-items:center;
+  padding:80px 0 60px;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center;
+  position:relative; z-index:2; width:100%;
+}
+.logo-wordmark{
+  margin:20px 0 24px;
+  max-width:520px;
+}
+.logo-wordmark img{
+  width:100%; height:auto; display:block;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,0.45));
+}
+.hero p.lead{
+  font-size:17px; line-height:1.8; color:var(--cream-dim);
+  max-width:480px; margin-bottom:34px;
+}
+.hero-actions{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+.btn-primary{
+  background:var(--coral); color:var(--cream);
+  font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:14px;
+  letter-spacing:.03em;
+  padding:16px 30px; border-radius:100px; text-decoration:none;
+  box-shadow:0 12px 26px rgba(193,68,45,0.35);
+  transition:transform .2s, box-shadow .2s;
+  display:inline-flex; align-items:center; gap:10px;
+}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 16px 32px rgba(193,68,45,0.45);}
+.btn-ghost{
+  font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--cream-dim);
+  text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px;
+  transition:color .2s, border-color .2s;
+}
+.btn-ghost:hover{color:var(--gold-light); border-color:var(--gold-light);}
+
+/* lens visual */
+.lens-stage{
+  position:relative; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
+}
+.lens-ring{
+  position:absolute; border-radius:50%; border:1px solid var(--line);
+}
+.lens-ring.r1{width:100%; height:100%;}
+.lens-ring.r2{width:90%; height:90%; border-color:rgba(217,164,65,0.25);}
+.lens-core{
+  width:74%; height:74%; border-radius:50%;
+  overflow:hidden;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.55);
+  position:relative;
+  animation:lens-breathe 7s ease-in-out infinite;
+  border:1px solid rgba(217,164,65,0.35);
+}
+.lens-core img{
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  display:block;
+}
+@keyframes lens-breathe{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.015);}
+}
+.lens-core::after{
+  content:""; position:absolute; inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 30%, rgba(255,255,255,0.22), transparent 55%);
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+.orbit-tag{
+  position:absolute; font-family:'IBM Plex Mono', monospace; font-size:11px;
+  color:var(--gold-light); background:rgba(12,26,16,0.75);
+  border:1px solid var(--line); border-radius:100px; padding:6px 12px;
+  letter-spacing:.05em; white-space:nowrap;
+}
+.orbit-tag.t1{top:2%; left:-4%;}
+.orbit-tag.t2{bottom:6%; right:-8%;}
+.orbit-tag.t3{top:44%; right:-14%;}
+
+/* ---------- section shell ---------- */
+section{position:relative; z-index:1; padding:110px 0;}
+.section-head{max-width:640px; margin-bottom:56px;}
+.section-head h2{font-size:clamp(28px, 3.6vw, 42px); margin-top:14px; line-height:1.2;}
+.section-head p{color:var(--cream-dim); margin-top:16px; font-size:16px; line-height:1.75;}
+
+/* ---------- intro / magnifier ---------- */
+.intro{background:var(--forest-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.intro-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;}
+.specimen-field{
+  position:relative; aspect-ratio:4/3.1; border-radius:18px; overflow:hidden;
+  border:1px solid var(--line);
+  cursor:none;
+  background:var(--forest-deep);
+}
+.field-base, .field-zoom{
+  position:absolute; inset:0;
+  background-image:url('https://s.imgz.io/2026/07/03/ed971a1a67e1711d4f59e48f02b6477e77282a1785bb9524.png');
+  background-repeat:no-repeat;
+}
+.field-base{
+  background-size:cover;
+  background-position:center;
+}
+.field-zoom{
+  background-size:220%;
+  background-position:center;
+  clip-path:circle(88px at 50% 50%);
+  filter:saturate(1.15) brightness(1.08) contrast(1.05);
+  transition:clip-path .05s linear;
+}
+.loupe-ring{
+  position:absolute; width:176px; height:176px; border-radius:50%;
+  border:2px solid var(--gold-light);
+  box-shadow:0 0 0 6px rgba(12,26,16,0.55), 0 18px 30px rgba(0,0,0,0.5);
+  pointer-events:none; transform:translate(-50%,-50%);
+  display:flex; align-items:flex-end; justify-content:center;
+}
+.loupe-handle{
+  position:absolute; width:6px; height:52px; background:var(--gold-light);
+  border-radius:4px; bottom:-46px; transform:rotate(45deg); transform-origin:top;
+}
+.specimen-caption{
+  position:absolute; left:16px; bottom:16px;
+  font-family:'IBM Plex Mono', monospace; font-size:11px;
+  background:rgba(12,26,16,0.72); border:1px solid var(--line);
+  padding:7px 12px; border-radius:100px; color:var(--cream-dim);
+  letter-spacing:.04em;
+}
+.intro-copy .eyebrow{margin-bottom:16px; display:inline-flex;}
+.intro-copy h2{font-size:clamp(26px,3.2vw,38px); line-height:1.28; margin-bottom:20px;}
+.intro-copy p{color:var(--cream-dim); font-size:16px; line-height:1.85; margin-bottom:16px;}
+.intro-copy p strong{color:var(--gold-light); font-weight:500;}
+
+/* ---------- categories ---------- */
+.cats-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+.cat-card{
+  border:1px solid var(--line); border-radius:20px; padding:34px;
+  background:linear-gradient(160deg, var(--forest-mid), var(--forest-deep));
+  position:relative; overflow:hidden;
+  transition:border-color .25s, transform .25s;
+}
+.cat-card:hover{border-color:var(--gold); transform:translateY(-4px);}
+.cat-tag{
+  font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--moss);
+  letter-spacing:.1em; text-transform:uppercase;
+}
+.cat-card h3{font-size:26px; margin:12px 0 8px;}
+.cat-card p.desc{color:var(--cream-dim); font-size:14.5px; line-height:1.7; margin-top:10px;}
+.prize-list{
+  margin-top:20px; border-top:1px solid var(--line); padding-top:18px;
+  display:flex; flex-direction:column; gap:12px;
+}
+.prize-row{display:flex; align-items:flex-start; gap:14px;}
+.prize-rank{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.03em;
+  color:var(--forest-deep); background:var(--gold-light);
+  padding:3px 10px; border-radius:100px; flex-shrink:0; white-space:nowrap;
+  margin-top:1px;
+}
+.prize-row.commend .prize-rank{
+  color:var(--gold-light); background:transparent; border:1px solid var(--line);
+}
+.prize-desc{font-size:14px; color:var(--cream-dim); line-height:1.6; padding-top:2px;}
+
+/* ---------- steps ---------- */
+.steps{background:var(--forest-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.steps-list{display:grid; grid-template-columns:repeat(2,1fr); gap:0 60px;}
+.step{padding:0 4px; position:relative;}
+.step-num{
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--gold);
+  border:1px solid var(--gold); width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; margin-bottom:22px;
+  background:var(--forest-mid); position:relative; z-index:2;
+}
+.step h4{font-family:'Taviraj', serif; font-size:22px; margin-bottom:12px; font-weight:500;}
+.step p{color:var(--cream-dim); font-size:15px; line-height:1.8;}
+.step-link{
+  display:inline-flex; align-items:center; gap:8px; margin-top:18px;
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--gold-light);
+  text-decoration:none; border:1px solid var(--gold); border-radius:100px;
+  padding:10px 20px; transition:background .2s, color .2s;
+}
+.step-link:hover{background:var(--gold); color:var(--forest-deep);}
+
+/* ---------- deadline / journal entry ---------- */
+.deadline{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+.journal-card{
+  border:1px solid var(--line); border-radius:20px; padding:42px;
+  background:var(--forest-mid);
+  position:relative;
+}
+.journal-card::before{
+  content:"บันทึกภาคสนาม"; position:absolute; top:-13px; left:36px;
+  background:var(--forest-deep); padding:2px 14px; border:1px solid var(--line); border-radius:100px;
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold-light); letter-spacing:.06em;
+}
+.countdown{display:flex; gap:14px; margin:26px 0 30px; flex-wrap:wrap;}
+.count-box{
+  flex:1; min-width:74px; text-align:center; border:1px solid var(--line); border-radius:12px;
+  padding:16px 8px; background:var(--forest-deep);
+}
+.count-box .n{font-family:'IBM Plex Mono', monospace; font-size:30px; color:var(--gold-light); font-weight:600;}
+.count-box .l{font-size:11.5px; color:var(--cream-dim); margin-top:4px; letter-spacing:.04em;}
+.deadline-dates{display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--cream-dim); border-top:1px solid var(--line); padding-top:20px;}
+.deadline-dates b{color:var(--cream); display:block; font-size:14px; margin-top:4px;}
+.deadline-copy h2{font-size:clamp(26px,3.2vw,38px); line-height:1.28; margin:14px 0 18px;}
+.deadline-copy p{color:var(--cream-dim); line-height:1.85; margin-bottom:26px;}
+
+/* ---------- gallery motif strip ---------- */
+.motif-strip{display:flex; overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--forest-deep);}
+.motif-track{display:flex; gap:0; animation:scroll-strip 34s linear infinite;}
+.motif-item{
+  width:220px; height:150px; flex-shrink:0; border-right:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.motif-item span{
+  font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--cream-dim);
+  position:absolute; bottom:12px; left:14px; letter-spacing:.06em;
+}
+@keyframes scroll-strip{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+/* ---------- CTA / footer ---------- */
+.cta-block{
+  text-align:center; padding:120px 0; position:relative;
+}
+.cta-block h2{font-size:clamp(32px,5vw,54px); line-height:1.15; max-width:760px; margin:20px auto 30px;}
+.cta-block p{color:var(--cream-dim); max-width:480px; margin:0 auto 40px; line-height:1.8;}
+.qr-row{display:flex; align-items:center; justify-content:center; gap:28px; margin-top:56px; flex-wrap:wrap;}
+.qr-box{
+  width:140px; height:140px; border-radius:14px; border:1px solid var(--line);
+  background:var(--cream);
+  padding:12px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 16px 32px rgba(0,0,0,0.35);
+}
+.qr-box img{width:100%; height:100%; object-fit:contain; display:block;}
+.qr-hash{text-align:left; font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--cream-dim); line-height:2;}
+.qr-hash b{color:var(--gold-light); font-weight:500;}
+
+footer{border-top:1px solid var(--line); padding:40px 0; }
+.foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+.foot-row p{font-size:13px; color:var(--cream-dim); font-family:'IBM Plex Mono', monospace;}
+
+/* ---------- responsive ---------- */
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr;}
+  .lens-stage{max-width:340px; margin:40px auto 0;}
+  .intro-grid{grid-template-columns:1fr;}
+  .cats-grid{grid-template-columns:1fr;}
+  .steps-list{grid-template-columns:1fr; row-gap:44px;}
+  .deadline{grid-template-columns:1fr; gap:36px;}
+  .qr-row{flex-direction:column;}
+  .qr-hash{text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="aperture-overlay">
+  <svg viewBox="0 0 240 240">
+    <g id="blades"></g>
+  </svg>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">เนื่องในสัปดาห์วิทยาศาสตร์</span>
+      <h1 class="logo-wordmark">
+        <img src="https://s.imgz.io/2026/07/13/254702f779d53c3d4.png" alt="Mini World : เรื่องเล่ามหัศจรรย์ผ่านเลนส์">
+      </h1>
+      <p class="lead">ประกวดภาพถ่ายมาโครสำหรับเด็กมัธยมโรงเรียนปากเกร็ด เปิดโลกของสิ่งมีชีวิตขนาดเล็กรอบตัว ให้ชัดเจนยิ่งขึ้นผ่านมุมมองของเลนส์ — พร้อมคำบรรยายภาพที่น่าสนใจ</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="https://forms.gle/X62MnqMLuhsUD6fm8">ส่งผลงานร่วมกิจกรรม ↗</a>
+        <a class="btn-ghost" href="#about">ดูรายละเอียดกิจกรรม</a>
+      </div>
+    </div>
+    <div class="lens-stage">
+      <div class="lens-ring r1"></div>
+      <div class="lens-ring r2"></div>
+      <div class="lens-core">
+        <img src="https://s.imgz.io/2026/07/03/ed971a1a67e1711d4f59e48f02b6477e77282a1785bb9524.png" alt="เลนส์กล้องกับภาพถ่ายมาโครธรรมชาติ">
+      </div>
+      <span class="orbit-tag t1">f/2.8 · 1:1 MACRO</span>
+      <span class="orbit-tag t2">รับสมัคร ม.ต้น–ม.ปลาย</span>
+      <span class="orbit-tag t3">ลุ้นของที่ระลึก</span>
+    </div>
+  </div>
+</section>
+
+<section class="intro" id="about">
+  <div class="wrap intro-grid">
+    <div class="specimen-field" id="specimenField">
+      <div class="field-base"></div>
+      <div class="field-zoom" id="fieldZoom"></div>
+      <div class="loupe-ring" id="loupeRing"><span class="loupe-handle"></span></div>
+      <span class="specimen-caption">เลื่อนเมาส์เพื่อส่องขยายผ่านเลนส์</span>
+    </div>
+    <div class="intro-copy">
+      <span class="eyebrow">เปิดโลกของสิ่งมีชีวิตขนาดเล็ก</span>
+      <h2>สิ่งที่ตาเปล่ามองข้าม คือเรื่องเล่าที่เลนส์มองเห็น</h2>
+      <p>หยดน้ำค้างบนใบไม้ ลวดลายปีกผีเสื้อ เส้นใยของเห็ดรา หรือดวงตาของแมงมุมตัวจิ๋ว — ทุกรายละเอียดเหล่านี้ซ่อนความมหัศจรรย์ที่รอให้นักเรียนหยิบกล้องขึ้นมาบันทึกไว้</p>
+      <p>ขอเชิญชวนนักเรียนระดับมัธยมโรงเรียนปากเกร็ดส่งภาพถ่ายมาโครที่ตัวเองภูมิใจ พร้อม <strong>คำบรรยายภาพที่น่าสนใจ</strong> เพื่อร่วมเป็นส่วนหนึ่งของนิทรรศการ "Mini World" ต้อนรับวันวิทยาศาสตร์แห่งชาติ</p>
+    </div>
+  </div>
+</section>
+
+<section id="categories">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">ประเภทผลงาน</span>
+      <h2>แบ่งการประกวดตามระดับชั้น</h2>
+      <p>เปิดรับผลงานจากนักเรียนทุกระดับชั้นมัธยม แยกตัดสินตามช่วงวัย เพื่อความเป็นธรรมในการให้รางวัล</p>
+    </div>
+    <div class="cats-grid">
+      <div class="cat-card">
+        <span class="cat-tag">Junior · ระดับ ม.ต้น</span>
+        <h3>มัธยมศึกษาตอนต้น</h3>
+        <p class="desc">สำหรับนักเรียน ม.1–ม.3 ที่อยากลองมองโลกผ่านมุมมองมาโครเป็นครั้งแรก ไม่จำเป็นต้องมีกล้องราคาแพง ใช้กล้องมือถือก็ส่งได้</p>
+        <div class="prize-list">
+          <div class="prize-row">
+            <span class="prize-rank">ชนะเลิศ</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row">
+            <span class="prize-rank">รองชนะเลิศ อันดับ 1</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row">
+            <span class="prize-rank">รองชนะเลิศ อันดับ 2</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row commend">
+            <span class="prize-rank">อันดับที่ 4</span>
+            <span class="prize-desc">เกียรติบัตรรางวัลชมเชย</span>
+          </div>
+          <div class="prize-row commend">
+            <span class="prize-rank">อันดับที่ 5</span>
+            <span class="prize-desc">เกียรติบัตรรางวัลชมเชย</span>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <span class="cat-tag">Senior · ระดับ ม.ปลาย</span>
+        <h3>มัธยมศึกษาตอนปลาย</h3>
+        <p class="desc">สำหรับนักเรียน ม.4–ม.6 ที่ต้องการท้าทายเทคนิคการถ่ายภาพมาโครและการเล่าเรื่องผ่านคำบรรยายภาพให้ลึกซึ้งยิ่งขึ้น</p>
+        <div class="prize-list">
+          <div class="prize-row">
+            <span class="prize-rank">ชนะเลิศ</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row">
+            <span class="prize-rank">รองชนะเลิศ อันดับ 1</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row">
+            <span class="prize-rank">รองชนะเลิศ อันดับ 2</span>
+            <span class="prize-desc">เงินรางวัล พร้อมเกียรติบัตร</span>
+          </div>
+          <div class="prize-row commend">
+            <span class="prize-rank">อันดับที่ 4</span>
+            <span class="prize-desc">เกียรติบัตรรางวัลชมเชย</span>
+          </div>
+          <div class="prize-row commend">
+            <span class="prize-rank">อันดับที่ 5</span>
+            <span class="prize-desc">เกียรติบัตรรางวัลชมเชย</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="steps">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">วิธีการร่วมกิจกรรม</span>
+      <h2>ส่งผลงานได้ใน 2 ขั้นตอน</h2>
+    </div>
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>ถ่ายภาพสิ่งมีชีวิตขนาดเล็ก</h4>
+        <p>ถ่ายภาพสิ่งมีชีวิตขนาดเล็กที่น่าสนใจด้วยตนเอง เช่น พืชหรือสัตว์ขนาดเล็ก เกสรดอกไม้ แมลง เซลล์สิ่งมีชีวิต ฯลฯ</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>ใส่ภาพและคำบรรยายในเทมเพลต Canva</h4>
+        <p>นำภาพถ่ายพร้อมคำบรรยายภาพไปใส่ในเทมเพลต Canva ที่กำหนด โดยนักเรียนสามารถใส่ภาพถ่ายและคำบรรยายได้จากลิงก์ด้านล่าง</p>
+        <a class="step-link" href="https://canva.link/vhm6kh6gxruc7hg?authuser=0" target="_blank" rel="noopener">เปิดเทมเพลต Canva ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="deadline">
+  <div class="wrap deadline">
+    <div class="deadline-copy">
+      <span class="eyebrow">กำหนดการ</span>
+      <h2>อย่าปล่อยให้ช่วงเวลานี้หลุดโฟกัส</h2>
+      <p>เปิดรับผลงานตั้งแต่วันนี้เป็นต้นไป จนถึงวันศุกร์ที่ 12 สิงหาคม 2569 ส่งผลงานได้ทั้งระดับ ม.ต้น และ ม.ปลาย</p>
+      <a class="btn-primary" href="https://forms.gle/X62MnqMLuhsUD6fm8">ส่งผลงานตอนนี้ ↗</a>
+    </div>
+    <div class="journal-card">
+      <div class="countdown" id="countdown">
+        <div class="count-box"><div class="n" id="cd-days">--</div><div class="l">วัน</div></div>
+        <div class="count-box"><div class="n" id="cd-hours">--</div><div class="l">ชั่วโมง</div></div>
+        <div class="count-box"><div class="n" id="cd-mins">--</div><div class="l">นาที</div></div>
+        <div class="count-box"><div class="n" id="cd-secs">--</div><div class="l">วินาที</div></div>
+      </div>
+      <div class="deadline-dates">
+        <div>เปิดรับผลงาน<br><b>ตั้งแต่วันนี้</b></div>
+        <div style="text-align:right;">ปิดรับผลงาน<br><b>ศุกร์ที่ 12 ส.ค. 2569</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="motif-strip">
+  <div class="motif-track" id="motifTrack"></div>
+</div>
+
+<section class="cta-block" id="join">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center;">พร้อมส่งผลงานหรือยัง</span>
+    <h2>บันทึกโลกใบเล็กในแบบของคุณ แล้วส่งให้เราชมกัน</h2>
+    <p>ศึกษารายละเอียดเพิ่มเติม เงื่อนไขการประกวด และดาวน์โหลดแบบฟอร์มส่งผลงานได้ที่ QR Code ด้านล่าง</p>
+    <a class="btn-primary" href="https://forms.gle/X62MnqMLuhsUD6fm8">ไปยังแบบฟอร์มส่งผลงาน ↗</a>
+    <div class="qr-row">
+      <div class="qr-box"><img src="https://s.imgz.io/2026/07/13/31a9aa04a886be751.png" alt="QR Code สำหรับดูรายละเอียดกิจกรรมและส่งผลงาน"></div>
+      <div class="qr-hash">
+        <div><b>#</b> วิธีการร่วมกิจกรรม</div>
+        <div><b>#</b> เงื่อนไขกิจกรรม</div>
+        <div><b>#</b> แบบฟอร์มส่งผลงาน</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="brand" style="font-size:14px;">
+      <img class="brand-mark" style="width:28px; height:28px;" src="https://s.imgz.io/2026/07/03/Pakkred-school-logo2_convertd91d6056380ce324.png" alt="ตราโรงเรียนปากเกร็ด">
+      โรงเรียนปากเกร็ด — Mini World Photo Contest 2569
+    </div>
+    <p>ปิดรับผลงาน 12 สิงหาคม 2569</p>
+  </div>
+</footer>
+
+<script>
+// build aperture blades
+const bladesGroup = document.getElementById('blades');
+const bladeCount = 8, cx=120, cy=120, r=170;
+for(let i=0;i<bladeCount;i++){
+  const angle = (360/bladeCount)*i;
+  const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('class','blade');
+  p.setAttribute('d', `M120,120 L${120+r*Math.cos(0)},${120+r*Math.sin(0)} A${r},${r} 0 0,1 ${120+r*Math.cos(0.45)},${120+r*Math.sin(0.45)} Z`);
+  p.setAttribute('transform', `rotate(${angle} 120 120)`);
+  p.style.animationDelay = (0.25 + i*0.02)+'s';
+  bladesGroup.appendChild(p);
+}
+setTimeout(()=>{ const ov=document.getElementById('aperture-overlay'); if(ov) ov.remove(); }, 1900);
+
+// magnifier / loupe interaction over the real macro illustration
+const field = document.getElementById('specimenField');
+const zoom = document.getElementById('fieldZoom');
+const ring = document.getElementById('loupeRing');
+const ZOOM = 2.2; // matches .field-zoom background-size: 220%
+function moveLoupe(x,y){
+  const rect = field.getBoundingClientRect();
+  const px = x - rect.left, py = y - rect.top;
+  ring.style.left = px+'px'; ring.style.top = py+'px';
+  zoom.style.clipPath = `circle(88px at ${px}px ${py}px)`;
+  zoom.style.backgroundPosition = `${-(px*(ZOOM-1))}px ${-(py*(ZOOM-1))}px`;
+}
+field.addEventListener('mousemove', e=>moveLoupe(e.clientX,e.clientY));
+field.addEventListener('mouseleave', ()=>{ zoom.style.clipPath='circle(0px at 50% 50%)'; ring.style.opacity='0';});
+field.addEventListener('mouseenter', ()=>{ ring.style.opacity='1';});
+field.addEventListener('touchmove', e=>{ const t=e.touches[0]; moveLoupe(t.clientX,t.clientY); }, {passive:true});
+ring.style.opacity='0';
+
+// motif strip - generate repeating pattern tiles
+const track = document.getElementById('motifTrack');
+const motifLabels = ['หยดน้ำค้าง','ปีกผีเสื้อ','เส้นใบไม้','เห็ดรา','ดวงตาแมงมุม','ละอองเกสร'];
+const motifGradients = [
+  'radial-gradient(circle at 50% 40%, rgba(244,239,225,0.5), transparent 60%), radial-gradient(circle at 50% 40%, rgba(217,164,65,0.5) 0 3px, transparent 4px)',
+  'repeating-conic-gradient(from 0deg, rgba(217,164,65,0.5) 0 10deg, transparent 10deg 20deg)',
+  'repeating-linear-gradient(70deg, rgba(92,138,82,0.6) 0 2px, transparent 2px 16px)',
+  'radial-gradient(circle, rgba(244,239,225,0.4) 0 4px, transparent 5px) 0 0/24px 24px',
+  'radial-gradient(circle at 50% 50%, rgba(12,26,16,0.9) 0 20px, rgba(217,164,65,0.6) 21px 26px, transparent 27px)',
+  'radial-gradient(circle, rgba(242,198,109,0.7) 0 3px, transparent 4px) 0 0/18px 18px'
+];
+let stripHTML = '';
+for(let rep=0; rep<2; rep++){
+  motifLabels.forEach((label,i)=>{
+    stripHTML += `<div class="motif-item" style="background:${motifGradients[i]}, #0c1a10;"><span>${label}</span></div>`;
+  });
+}
+track.innerHTML = stripHTML;
+
+// countdown
+const target = new Date('2026-08-12T23:59:59+07:00').getTime();
+function tick(){
+  const now = Date.now();
+  const diff = Math.max(0, target - now);
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
